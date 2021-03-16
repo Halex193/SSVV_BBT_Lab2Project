@@ -25,9 +25,9 @@ public class AppTest
     {
         StudentValidator studentValidator = new StudentValidator();
         TemaValidator temaValidator = new TemaValidator();
-        String filenameStudent = "fisiere/Studenti2.xml";
-        String filenameTema = "fisiere/Teme2.xml";
-        String filenameNota = "fisiere/Note2.xml";
+        String filenameStudent = "fisiere/Studenti.xml";
+        String filenameTema = "fisiere/Teme.xml";
+        String filenameNota = "fisiere/Note.xml";
 
         //StudentFileRepository studentFileRepository = new StudentFileRepository(filenameStudent);
         //TemaFileRepository temaFileRepository = new TemaFileRepository(filenameTema);
@@ -44,7 +44,7 @@ public class AppTest
     @Test
     public void testAddStudentValidGrupa()
     {
-        service.addStudent(new Student("1", "test", 937, "test@test.test"));
+        service.addStudent(new Student("12345", "test", 937, "test@test.test"));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class AppTest
     {
         try
         {
-            service.addStudent(new Student("1", "test", -1, "test@test.test"));
+            service.addStudent(new Student("12345", "test", -1, "test@test.test"));
         }
         catch(ValidationException e)
         {
