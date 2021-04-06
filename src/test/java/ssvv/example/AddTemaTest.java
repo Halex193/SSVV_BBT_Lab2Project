@@ -13,6 +13,8 @@ import ssvv.example.service.Service;
 import ssvv.example.validation.NotaValidator;
 import ssvv.example.validation.StudentValidator;
 import ssvv.example.validation.TemaValidator;
+import ssvv.example.validation.ValidationException;
+
 import java.io.File;
 
 import static org.junit.Assert.*;
@@ -50,8 +52,7 @@ public class AddTemaTest
     }
 
     @Test
-    public void testCase2()
-    {
+    public void testCase2() {
         Tema initialTema = new TemaBuilder().createTema();
         service.addTema(initialTema);
         Tema tema = service.addTema(new TemaBuilder().createTema());
@@ -61,10 +62,49 @@ public class AddTemaTest
         assertEquals(initialTema.getDescriere(), tema.getDescriere());
     }
 
+    @Test
+    public void testCase3() {
+        try {
+            service.addTema(new TemaBuilder().setNrTema("").createTema());
+            fail();
+        } catch (ValidationException e) {
+            assertEquals("Numar tema invalid!", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testCase4() {
+        try {
+            service.addTema(new TemaBuilder().setDescriere("").createTema());
+            fail();
+        } catch (ValidationException e) {
+            assertEquals("Descriere invalida!", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testCase5() {
+        try {
+            service.addTema(new TemaBuilder().setDeadline(-1).createTema());
+            fail();
+        } catch (ValidationException e) {
+            assertEquals("Deadlineul trebuie sa fie intre 1-14.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testCase6() {
+        try {
+            service.addTema(new TemaBuilder().setPrimire(-1).createTema());
+            fail();
+        } catch (ValidationException e) {
+            assertEquals("Saptamana primirii trebuie sa fie intre 1-14.", e.getMessage());
+        }
+    }
+
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @After
-    public void teardown()
-    {
+    public void teardown() {
         service = null;
         new File(filenameStudent).delete();
         new File(filenameNota).delete();
