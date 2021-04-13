@@ -4,8 +4,9 @@ import ssvv.example.curent.Curent;
 import ssvv.example.domain.Nota;
 import ssvv.example.domain.Student;
 import ssvv.example.domain.Tema;
-
-import ssvv.example.repository.*;
+import ssvv.example.repository.NotaXMLRepo;
+import ssvv.example.repository.StudentXMLRepo;
+import ssvv.example.repository.TemaXMLRepo;
 import ssvv.example.validation.NotaValidator;
 import ssvv.example.validation.StudentValidator;
 import ssvv.example.validation.TemaValidator;
@@ -155,24 +156,24 @@ public class Service {
 
     /**
      * Adauga o nota
-     * @param nota - nota
+     *
+     * @param nota     - nota
      * @param feedback - feedback-ul notei
      * @return null daca nota a fost adaugata sau nota daca aceasta exista deja
      */
-    public double addNota(Nota nota, String feedback){
+    public Nota addNota(Nota nota, String feedback) {
         notaValidator.validate(nota);
         Student student = studentFileRepository.findOne(nota.getIdStudent());
         Tema tema = temaFileRepository.findOne(nota.getIdTema());
         int predare = calculeazaSPredare(nota.getData());
-        if(predare != tema.getDeadline()){
-            if (predare-tema.getDeadline() == 1){
-                nota.setNota(nota.getNota()-2.5);
-            }
-            else{
+        if (predare != tema.getDeadline()) {
+            if (predare - tema.getDeadline() == 1) {
+                nota.setNota(nota.getNota() - 2.5);
+            } else {
                 throw new ValidationException("Studentul nu mai poate preda aceasta tema!");
             }
         }
-        notaFileRepository.save(nota);
+        Nota newNota = notaFileRepository.save(nota);
         String filename = "fisiere/" + student.getNume() + ".txt";
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filename, true))){
             bufferedWriter.write("\nTema: " + tema.getID());
@@ -184,7 +185,7 @@ public class Service {
         } catch (IOException exception){
             throw new ValidationException(exception.getMessage());
         }
-        return nota.getNota();
+        return newNota;
     }
 
     /**

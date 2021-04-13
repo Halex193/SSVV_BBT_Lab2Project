@@ -5,6 +5,7 @@ import ssvv.example.domain.Student;
 import ssvv.example.domain.Tema;
 import ssvv.example.service.Service;
 import ssvv.example.validation.ValidationException;
+
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -381,7 +382,8 @@ public class UI {
         scanner.nextLine();
         String feedback = scanner.nextLine();        //System.out.println(feedback);
         Nota notaCatalog = new Nota(idNota, idStudent, nrTema, nota, dataPredare);
-        double notaFinala = service.addNota(notaCatalog, feedback);
+        service.addNota(notaCatalog, feedback);
+        double notaFinala = notaCatalog.getNota();
         System.out.println("Nota maxima pe care o poate primi studentul este: " + notaFinala);
     }
 
