@@ -66,6 +66,12 @@ public class IntegrationAddTest {
     }
 
     @Test
+    public void testAddStudentTema() {
+        service.addStudent(new StudentBuilder().createStudent());
+        service.addTema(new TemaBuilder().createTema());
+    }
+
+    @Test
     public void testAddGrade() {
         try {
             service.addNota(new NotaBuilder().createNota(), "bine bos");
