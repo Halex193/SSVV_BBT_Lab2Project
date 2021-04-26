@@ -6,6 +6,7 @@ import ssvv.example.domain.Tema;
 import ssvv.example.service.Service;
 import ssvv.example.validation.ValidationException;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -377,7 +378,12 @@ public class UI {
         System.out.print("Introduceti data predarii temei(format: an-luna-data): ");
         String data = scanner.next();
         String[] date = data.split("-");
-        LocalDate dataPredare = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
+        LocalDate dataPredare = null;
+        try {
+            dataPredare = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
+        } catch (DateTimeException e) {
+            throw new ValidationException(e.getMessage());
+        }
         System.out.print("Introduceti feedback: ");
         scanner.nextLine();
         String feedback = scanner.nextLine();        //System.out.println(feedback);
